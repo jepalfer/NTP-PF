@@ -1,5 +1,7 @@
 package Huffman
 
-class Nodo {
-
+abstract class Nodo {
+  def calcularPeso : BigInt
+  def obtenerCaracteres : List[Char]
+  //def generaArbol = ???
 }
