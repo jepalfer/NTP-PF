@@ -1,0 +1,5 @@
+package Huffman
+
+class Nodo {
+
+}
