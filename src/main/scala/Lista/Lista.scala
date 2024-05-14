@@ -82,32 +82,6 @@ def concatenar[A](lista1: Lista[A], lista2: Lista[A]): Lista[A] =
         case Cons(_, _) => Cons(cabezaLista1, concatenar(colaLista1, lista2))
 
 /**
- * Funcion de utilidad para aplicar una funcion de forma sucesiva a los
- * elementos de la lista con asociatividad por la derecha
- * @param lista
- * @param neutro
- * @param funcion
- * @param A
- * @param B
- * @return
- */
-def foldRight[A, B](lista : Lista[A], neutro : B)(funcion : (A, B) => B): B = ???
-
-/**
- * Suma mediante foldRight
- * @param listaEnteros
- * @return
- */
-def sumaFoldRight(listaEnteros : Lista[Int]) : Double = ???
-
-/**
- * Producto mediante foldRight
- * @param listaEnteros
- * @return
- */
-def productoFoldRight(listaEnteros : Lista[Int]) : Double = ???
-
-/**
  * Reemplaza la cabeza por nuevo valor. Se asume que si la lista esta vacia
  * se devuelve una lista con el nuevo elemento
  * @param lista
@@ -188,7 +162,45 @@ def eliminarMientras[A](lista: Lista[A], criterio: (A, A) => Boolean)(valor: A):
  * @param A tipo de datos de la lista
  * @return
  */
-def eliminarUltimo[A](lista : Lista[A]) : Lista[A] = ???
+def eliminarUltimo[A](lista : Lista[A]) : Lista[A] =
+  lista match
+    case Nil => Nil
+    case Cons(_, Nil) => Nil
+    case Cons(cabeza, cola) => Cons(cabeza, eliminarUltimo(cola))
+
+/**
+ * Funcion de utilidad para aplicar una funcion de forma sucesiva a los
+ * elementos de la lista con asociatividad por la derecha
+ *
+ * @param lista
+ * @param neutro
+ * @param funcion
+ * @param A
+ * @param B
+ * @return
+ */
+def foldRight[A, B](lista: Lista[A], neutro: B)(funcion: (A, B) => B): B =
+  lista match
+    case Nil => neutro
+    case Cons(cabeza, cola) => funcion(cabeza, foldRight(cola, neutro)(funcion))
+
+/**
+ * Suma mediante foldRight
+ *
+ * @param listaEnteros
+ * @return
+ */
+def sumaFoldRight(listaEnteros: Lista[Int]): Double =
+  foldRight(listaEnteros, 0.0)((a, b) => a + b)
+
+/**
+ * Producto mediante foldRight
+ *
+ * @param listaEnteros
+ * @return
+ */
+def productoFoldRight(listaEnteros: Lista[Int]): Double =
+  foldRight(listaEnteros, 1.0)((a, b) => a * b)
 
 /**
  * foldLeft con recursividad tipo tail
@@ -199,8 +211,46 @@ def eliminarUltimo[A](lista : Lista[A]) : Lista[A] = ???
  * @param B parametro de tipo del elemento neutro
  * @return
  */
-//@annotation.tailrec
-def foldLeft[A, B](lista : Lista[A], neutro: B)(funcion : (B, A) => B): B = ???
+def foldLeftTR[A, B](lista : Lista[A], neutro: B)(funcion : (B, A) => B): B =
+  @annotation.tailrec
+  def go(acum: B, nuevaLista: Lista[A]): B =
+    nuevaLista match
+      case Nil => acum
+      case Cons(cabeza, cola) => go(funcion(acum, cabeza), cola)
+  go(neutro, lista)
+
+/**
+ * foldLeft con recursividad
+ *
+ * @param lista   lista con la que trabajar
+ * @param neutro  elemento neutro
+ * @param funcion funcion a aplicar
+ * @param A       parametros de tipo de elementos de la lista
+ * @param B       parametro de tipo del elemento neutro
+ * @return
+ */
+def foldLeft[A, B](lista : Lista[A], neutro: B)(funcion : (B, A) => B): B =
+  lista match
+    case Nil => neutro
+    case Cons(cabeza, cola) => funcion(foldLeft(cola, neutro)(funcion), cabeza)
+
+/**
+ * Producto mediante foldLeft
+ *
+ * @param listaEnteros
+ * @return
+ */
+def productoFoldLeft(listaEnteros: Lista[Int]): Double =
+  foldLeftTR(listaEnteros, 1.0)((a, b) => a * b)
+
+/**
+ * Producto mediante foldLeft
+ *
+ * @param listaEnteros
+ * @return
+ */
+def sumaFoldLeft(listaEnteros: Lista[Int]): Double =
+  foldLeftTR(listaEnteros, 0.0)((a, b) => a + b)
 
 object criterios{
   def mayorQue[A](x: A, y: A)(implicit ord: Ordering[A]): Boolean = ord.gt(x, y)
@@ -255,4 +305,38 @@ object prueba extends App{
   val A = Lista(1, 2, 3)
   val B = Lista (4, 5)
   println(concatenar(A, B))
+
+
+  println("============")
+  println("eliminar ultimo")
+  println("============")
+  val listaAEliminar = Lista(1)
+  //println(eliminarUltimo(listaAEliminar))
+  println(eliminarUltimo(miLista))
+
+  println("============")
+  println("suma FR")
+  println("============")
+  //println(eliminarUltimo(listaAEliminar))
+  println(sumaFoldRight(miLista))
+
+  println("============")
+  println("producto FR")
+  println("============")
+  //println(eliminarUltimo(listaAEliminar))
+  println(productoFoldRight(miLista))
+
+  println("============")
+  println("producto FL")
+  println("============")
+  //println(eliminarUltimo(listaAEliminar))
+  println(productoFoldLeft(miLista))
+
+  println("============")
+  println("suma FL")
+  println("============")
+  //println(eliminarUltimo(listaAEliminar))
+  println(sumaFoldLeft(miLista))
+
+
 }
