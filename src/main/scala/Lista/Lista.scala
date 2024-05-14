@@ -27,7 +27,9 @@ case class Cons[+A](cabeza : A, cola : Lista[A]) extends Lista[A]
  * @param A
  * @return
  */
-def apply[A](elementos : A*) : Lista[A] = ???
+def apply[A](elementos : A*) : Lista[A] =
+  if (elementos.isEmpty) Nil
+  else Cons(elementos.head, apply(elementos.tail: _*))
 
 /**
  * Obtiene la longitud de una lista
@@ -35,14 +37,19 @@ def apply[A](elementos : A*) : Lista[A] = ???
  * @param A
  * @return
  */
-def longitud[A](lista : Lista[A]) : Int = ???
-
+def longitud[A](lista : Lista[A]) : Int =
+  lista match
+    case Nil => 0
+    case Cons(_, cola) => 1 + longitud(cola)
 /**
  * Metodo para sumar los valores de una lista de enteros
  * @param enteros
  * @return
  */
-def sumaEnteros(enteros : Lista[Int]) : Double = ???
+def sumaEnteros(enteros : Lista[Int]) : Double =
+  enteros match
+    case Nil => 0
+    case Cons(cabeza, cola) => cabeza + sumaEnteros(cola)
 
 
 /**
@@ -50,7 +57,10 @@ def sumaEnteros(enteros : Lista[Int]) : Double = ???
  * @param enteros
  * @return
  */
-def productoEnteros(enteros : Lista[Int]) : Double = ???
+def productoEnteros(enteros : Lista[Int]) : Double =
+  enteros match
+    case Nil => 1
+    case Cons(cabeza, cola) => cabeza * productoEnteros(cola)
 
 /**
  * Metodo para agregar el contenido de dos listas
@@ -95,7 +105,10 @@ def productoFoldRight(listaEnteros : Lista[Int]) : Double = ???
  * @param A
  * @return
  */
-def asignarCabeza[A](lista : Lista[A], cabezaNueva : A) : Lista[A] = ???
+def asignarCabeza[A](lista : Lista[A], cabezaNueva : A) : Lista[A] =
+  lista match
+    case Nil => Cons(cabezaNueva, Nil)
+    case Cons(_, cola) => Cons(cabezaNueva, cola)
 
 /**
  * Devuelve el primer elemento de la lista
@@ -104,7 +117,10 @@ def asignarCabeza[A](lista : Lista[A], cabezaNueva : A) : Lista[A] = ???
  * @tparam A
  * @return
  */
-def head[A](lista : Lista[A]) : Option[A] = ???
+def head[A](lista : Lista[A]) : Option[A] =
+  lista match
+    case Nil => None
+    case Cons(cabeza, _) => Some(cabeza)
 
 /**
  * Elimina el elemento cabeza de la lista
@@ -112,7 +128,10 @@ def head[A](lista : Lista[A]) : Option[A] = ???
  * @param A
  * @return
  */
-def tail[A](lista : Lista[A]): Lista[A] = ???
+def tail[A](lista : Lista[A]): Lista[A] =
+  lista match
+    case Nil => Nil
+    case Cons(_, cola) => cola
 
 /**
  * Elimina los n primeros elementos de una lista
