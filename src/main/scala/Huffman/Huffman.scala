@@ -1,5 +1,0 @@
-package Huffman
-
-class Huffman {
-
-}
