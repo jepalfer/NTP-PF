@@ -36,25 +36,14 @@ def obtieneCodificado(tabla: TablaCodificacion)(mensaje: String): String =
 object ArbolBinario extends App{
   val textoPrueba = "AAAAAAAABBBCDEFGH"
   /*
-  val hojaI = Hoja('A', 2)
-  val hojaD = Hoja('B', 4)
-  val interno1 = Interno(hojaI, hojaD)
-
-  println(interno1.calcularPeso)
-
-  val secuenciaInterno1 = interno1.obtenerCaracteres
-  println(secuenciaInterno1.length)
-  for (i <- secuenciaInterno1.indices){
-    print(secuenciaInterno1(i))
-  }*/
-  val hojaA = Hoja('A', 8)
-  val hojaH = Hoja('H', 3)
-  val hojaD = Hoja('D', 1)
-  val hojaG = Hoja('G', 1)
-  val hojaC = Hoja('C', 1)
-  val hojaE = Hoja('E', 1)
-  val hojaF = Hoja('F', 1)
-  val hojaB = Hoja('B', 1)
+  val hojaA = Hoja("A", 8)
+  val hojaH = Hoja("H", 3)
+  val hojaD = Hoja("D", 1)
+  val hojaG = Hoja("G", 1)
+  val hojaC = Hoja("C", 1)
+  val hojaE = Hoja("E", 1)
+  val hojaF = Hoja("F", 1)
+  val hojaB = Hoja("B", 1)
 
   val internoHD = Interno(hojaH, hojaD)
   val internoGC = Interno(hojaG, hojaC)
@@ -81,5 +70,32 @@ object ArbolBinario extends App{
   println(obtieneCodificado(convertirArbolTabla(raiz))("ABCD"))
   println(obtieneCodificado(convertirArbolTabla(raiz))("HG"))
 
-  println(generaArbol(textoPrueba).obtenerCaracteres)
+  val arbol = generaArbol(textoPrueba)
+  println(arbol.obtenerCaracteres + " || " + arbol.calcularPeso)
+
+  val tablaCodificacion = convertirArbolTabla(arbol)
+
+  println(convertirArbolTabla(raiz))
+  println(tablaCodificacion)
+  */
+  println("=======PRUEBA DE ARBOL=======")
+  var mensajeSecretoCaps = "CAPSTRAELAACASA"
+  var binaryTreeCaps = generaArbol(mensajeSecretoCaps)
+  var encodeCaps = obtieneCodificado(convertirArbolTabla(binaryTreeCaps))(mensajeSecretoCaps)
+  println(obtieneDescodificado(binaryTreeCaps, encodeCaps))
+
+
+  var mensajeSecretoABCD = "ABCD"
+  var binaryTreeABCD = generaArbol(mensajeSecretoABCD)
+  var encodeABCD = obtieneCodificado(convertirArbolTabla(binaryTreeABCD))(mensajeSecretoABCD)
+  println(obtieneDescodificado(binaryTreeABCD, encodeABCD))
+
+  val mensajeGuion = "AAAAAAAABBBCDEFGH"
+  val arbolGuion = generaArbol(mensajeGuion)
+
+  val palabra = "ABCD"
+  val codificada = obtieneCodificado(convertirArbolTabla(arbolGuion))(palabra)
+  val descodificada = obtieneDescodificado(arbolGuion, codificada)
+  println( palabra + " => " + descodificada + " || " + codificada)
+
 }

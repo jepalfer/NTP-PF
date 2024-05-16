@@ -1,9 +1,9 @@
 package Huffman
 
-class Hoja (caracter:Char, valor: Int) extends Nodo{
+class Hoja (caracter:String, valor: Int) extends Nodo{
 
   override def calcularPeso: Int = valor
 
-  override def obtenerCaracteres: List[Char] = List(caracter)
+  override def obtenerCaracteres: String = caracter
 }
-def apply(caracter: Char, valor: Int): Hoja = new Hoja (caracter, valor)
+def apply(caracter: String, valor: Int): Hoja = new Hoja (caracter, valor)
