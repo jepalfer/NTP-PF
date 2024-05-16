@@ -36,48 +36,7 @@ def obtieneCodificado(tabla: TablaCodificacion)(mensaje: String): String =
 object ArbolBinario extends App{
   val textoPrueba = "AAAAAAAABBBCDEFGH"
   /*
-  val hojaA = Hoja("A", 8)
-  val hojaH = Hoja("H", 3)
-  val hojaD = Hoja("D", 1)
-  val hojaG = Hoja("G", 1)
-  val hojaC = Hoja("C", 1)
-  val hojaE = Hoja("E", 1)
-  val hojaF = Hoja("F", 1)
-  val hojaB = Hoja("B", 1)
 
-  val internoHD = Interno(hojaH, hojaD)
-  val internoGC = Interno(hojaG, hojaC)
-  val internoEF = Interno(hojaE, hojaF)
-  val internoHDGC = Interno(internoHD, internoGC)
-  val internoEFB = Interno(internoEF, hojaB)
-  val internoBCDEFGH = Interno(internoHDGC, internoEFB)
-  val raiz = Interno(hojaA, internoBCDEFGH)
-
-  println(raiz.obtenerCaracteres)
-  println(raiz.calcularPeso)
-
-  println(raiz.hijoD.obtenerCaracteres)
-
-  println(obtieneDescodificado(raiz, "011110111001"))
-
-  val tabla: TablaCodificacion = Map(
-    'A' -> "0",
-    'B' -> "111",
-    'C' -> "1011",
-    'D' -> "1001",
-  )
-  println(obtieneCodificado(tabla)("ABCD"))
-  println(obtieneCodificado(convertirArbolTabla(raiz))("ABCD"))
-  println(obtieneCodificado(convertirArbolTabla(raiz))("HG"))
-
-  val arbol = generaArbol(textoPrueba)
-  println(arbol.obtenerCaracteres + " || " + arbol.calcularPeso)
-
-  val tablaCodificacion = convertirArbolTabla(arbol)
-
-  println(convertirArbolTabla(raiz))
-  println(tablaCodificacion)
-  */
   println("=======PRUEBA DE ARBOL=======")
   var mensajeSecretoCaps = "CAPSTRAELAACASA"
   var binaryTreeCaps = generaArbol(mensajeSecretoCaps)
@@ -89,7 +48,7 @@ object ArbolBinario extends App{
   var binaryTreeABCD = generaArbol(mensajeSecretoABCD)
   var encodeABCD = obtieneCodificado(convertirArbolTabla(binaryTreeABCD))(mensajeSecretoABCD)
   println(obtieneDescodificado(binaryTreeABCD, encodeABCD))
-
+  */
   val mensajeGuion = "AAAAAAAABBBCDEFGH"
   val arbolGuion = generaArbol(mensajeGuion)
 
@@ -98,4 +57,14 @@ object ArbolBinario extends App{
   val descodificada = obtieneDescodificado(arbolGuion, codificada)
   println( palabra + " => " + descodificada + " || " + codificada)
 
+  println("=======REGENTA=======")
+  val regenta = leerArchivo("src/main/scala/Huffman/codificacionHuffman/regenta.txt", true)
+  var binaryTreeRegenta = generaArbol(regenta)
+  var tablaRegenta = convertirArbolTabla(binaryTreeRegenta)
+  val mensajeSecreto = leerArchivo("src/main/scala/Huffman/codificacionHuffman/mensajeSecreto", false)
+  val mensajeSecretoDescodificado = obtieneDescodificado(binaryTreeRegenta, mensajeSecreto)
+  val mensajeSecretoCodificado = obtieneCodificado(tablaRegenta)(mensajeSecretoDescodificado)
+
+  println(mensajeSecretoDescodificado + " => " + mensajeSecretoCodificado)
+  if (mensajeSecretoCodificado.equals(mensajeSecreto)) println("Codificado correctamente")
 }
