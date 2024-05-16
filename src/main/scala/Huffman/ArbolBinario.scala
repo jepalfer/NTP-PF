@@ -11,13 +11,8 @@ def obtieneDescodificado(arbol: Nodo, codigo: String): String =
       else go(arbol, indice, nuevaCadena)
     }
     else{
-      //10001010
-      if (codigo(indice) == '0') {
-        go(nodoActual.asInstanceOf[Interno].hijoI, indice + 1, nuevaCadena)
-      }
-      else {
-        go(nodoActual.asInstanceOf[Interno].hijoD, indice + 1, nuevaCadena)
-      }
+      if (codigo(indice) == '0') go(nodoActual.asInstanceOf[Interno].hijoI, indice + 1, nuevaCadena)
+      else go(nodoActual.asInstanceOf[Interno].hijoD, indice + 1, nuevaCadena)
     }
 
 
@@ -25,15 +20,21 @@ def obtieneDescodificado(arbol: Nodo, codigo: String): String =
   go(arbol, 0, cadenaFinal)
 
 
-def obtieneCodificado(arbol: Nodo, mensaje: String): String =
-  def go(nodoActual: Nodo, indice: Int, cadena: String): String = ???
-
+def obtieneCodificado(tabla: TablaCodificacion)(mensaje: String): String =
+  def go(indice: Int, cadena: String): String =
+    var nuevaCadena = cadena
+    if (indice == mensaje.length) nuevaCadena
+    else {
+      nuevaCadena += codificarConTabla(tabla)(mensaje(indice))
+      go(indice + 1, nuevaCadena)
+    }
 
   val cadenaFinal = ""
-  go(arbol, 0, cadenaFinal)
+  go(0, cadenaFinal)
 
 
 object ArbolBinario extends App{
+  val textoPrueba = "AAAAAAAABBBCDEFGH"
   /*
   val hojaI = Hoja('A', 2)
   val hojaD = Hoja('B', 4)
@@ -69,4 +70,16 @@ object ArbolBinario extends App{
   println(raiz.hijoD.obtenerCaracteres)
 
   println(obtieneDescodificado(raiz, "011110111001"))
+
+  val tabla: TablaCodificacion = Map(
+    'A' -> "0",
+    'B' -> "111",
+    'C' -> "1011",
+    'D' -> "1001",
+  )
+  println(obtieneCodificado(tabla)("ABCD"))
+  println(obtieneCodificado(convertirArbolTabla(raiz))("ABCD"))
+  println(obtieneCodificado(convertirArbolTabla(raiz))("HG"))
+
+  println(generaArbol(textoPrueba).obtenerCaracteres)
 }
